@@ -1,0 +1,126 @@
+
+# Question 2. Correlation plots and Sactterplots
+
+
+```{r}
+#rm(list=ls())
+#options(digit = 4)
+#install.packages("HistData",  repos = "http://cran.us.r-project.org", dependencies=TRUE) # After the first compile, you may comment out this line.
+
+install.packages<-contrib.url
+install.packages('corrplot')
+library(corrplot)
+library(ggplot2)
+library(GGally)
+library(HistData)
+
+data(GaltonFamilies)
+Galton2 <- data.frame(GaltonFamilies)
+
+```
+
+```{r}
+names(Galton2)
+```
+
+
+1. Obtain the correlation matrix of all the numeric and integers variables
+
+```{r}
+dt<-subset(Galton2,select=-c(family,gender))
+M1=cor(dt)
+M1
+
+```
+
+
+2. Obtain the correlation plot of all the numeric and integer variables
+
+```{r}
+
+corrplot::corrplot(M1)
+
+```
+
+
+3. Obtain the scatterplot matrix of all the variables in Galton2 with gender the first variable and childHeight variable as the output variable
+
+```{r}
+
+options(warn = -1)
+
+ggpairs(Galton2,columns= c(7,1:6,8), cardinality_threshold = 250,lower = list(
+          continuous = "smooth",
+          combo = "facetdensity",
+          mapping = aes(color = gender)) )
+
+
+
+```
+
+
+
+4. Which variables look like potential predictors of childHeight?
+
+Ans-'Childnum' with moderate negative correlation and 'midparentHeight' with small positive correlation value looks like potential predictors as childheight. 
+From the above scatterplot matrix 'mother' and 'father' also shows positive linear trend with 'Childheight'.
+
+
+
+5. Which pairs of predictors look redundant?
+
+Ans-'Father' with 'Midparentheight' can be considered redundant as they are highly correlated.
+'Mother' with 'midparentHeight' can be considered redundant as they are highly correlated. (Also we know from the our dataset that 'Midparentheight' is derived using the value of these two variables) 
+
+"children' and 'Childnum' have high co-relation with each other thus they can too create collinearity issues,however children correlation is very small with 'childheight' while' Childnum' have high correlation value with 'childHeight'. So we will have to explore it further. 
+
+
+6. Obtain the scatterplot childHeight vs midparentHeight with color of points according to gender
+
+
+```{r}
+p<-ggplot(Galton2)+aes(x=midparentHeight, y=childHeight, color=gender) +
+  geom_point(alpha=1/2)
+
+p
+
+
+```
+
+
+
+7. Add to this plot, title = “Original Galton Data”, and subtitle = “Scatterplot”.
+
+
+```{r}
+
+
+p1<- p+ labs(title='Original Galton Data', subtitle = 'Scatterplot')
+
+p1
+
+```
+
+
+
+
+
+8. Add to this plot, loess regression lines for each gender group
+
+```{r}
+
+p2<- p1 + geom_smooth(method="loess",se=FALSE,color='green')+geom_smooth(method = "lm",se=FALSE, color='blue')
+
+p2
+
+```
+
+
+
+
+
+
+
+
+
+

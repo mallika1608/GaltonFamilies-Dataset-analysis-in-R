@@ -1,0 +1,141 @@
+---
+title: "Q6-Comparing_models g.sm vs g.big"
+---
+
+ 
+
+```{r}
+
+library(HistData)
+
+library(ggplot2)
+
+install.packages<-contrib.url
+
+data(GaltonFamilies)
+Galton2 <- data.frame(GaltonFamilies)
+
+```
+
+
+1. Fit the following model for childHeight, g.big: \(childHight = \beta_0 + \beta_1gender + \beta_2father + \beta_3mother + \beta_4children\). What are the estimated coefficients, standard errors of estimate, t-values of estimate, and p-values of estimate?
+
+
+```{r}
+
+g.big<-lm(childHeight~gender+father+mother+children,Galton2)
+summary(g.big)$coeff
+
+
+```
+
+Fit the following model for childHeight, g.sm: \(childHight = \beta_0 + \beta_1gender + \beta_2father\). What are the estimated coefficients, standard errors of estimate, t-values of estimate, and p-values of estimate?
+
+
+```{r}
+g.sm<-lm(childHeight~gender+father, Galton2)
+summary(g.sm)$coeff
+
+
+```
+
+For the test of the model g.sm vs the model g.big, in terms of the beta coefficients what are the null and alternative hypotheses for this statistical test?
+
+
+H0: $\beta_3mother + \beta_4children=0$
+
+H1: $\beta_3mother + \beta_4children\ne 0$
+
+
+
+
+4. Compute the Analysis of Variance Table for this test based on the data.
+
+
+```{r}
+
+anova(g.sm,g.big)
+
+
+```
+
+5. Using \(\alpha = 0.001\), based on the p-value, what is the decision rule and conclusion of the hypotheses test of \(g.sm\) versus \(g.big\)?
+
+
+Decision rule-
+ if $p<alpha = 0.001$ reject H0
+ if $p>alpha = 0.001$, accept H0
+
+Conclusion- We reject H0 and accepts that 'mother' and 'children' predicts 'Childheight
+
+
+6.Compute the fit plot for the g.big with the following specifications:
+45 degree line in red
+title "Fit Plot"
+y-axis label "Child Height"
+x-axis label "Fitted Values"
+
+
+```{r}
+
+p5<-ggplot(data=g.big, aes(x=g.big$fitted.values, y=Galton2$childHeight))+
+  geom_point()+
+  geom_abline (intercept=0,slope=1, col='red')+
+  labs(title = 'Fit Plot')
+
+p5
+
+```
+
+
+What is the Pearson correlation between the g.big fitted-values and actual-values
+
+
+```{r}
+p<-cor(g.big$fitted.values,Galton2$childHeight)
+p
+
+```
+
+
+8. Is the correlation strong, moderate or weak?
+
+Ans- The correlation is strong
+
+
+9. What does this indicate for the model?
+
+Ans- This indicate that model's predicted values and actual values are highly correlated. Therefore our model is good.
+
+
+10. What is the \(R^2\) for the g.big model?
+
+```{r}
+summary(g.big)$r.square 
+
+```
+
+11.What does \(R^2\) mean for the fitted model?
+
+Ans- R square indicates the precision of the model to predict the dependent variables as close to the actual data.
+Another way to explain is R2 is the percentage of variation in actual Y-values explained by the fitted Y values
+
+
+12. Theoretically, what is the relation between the \(R^2\) and the Pearson correlation (actual y-values vs fitted-values)?
+
+Ans- R2 is square of Pearson correlation between the actual Y value and the predicted Y values
+
+
+13.Show that this relation holds for the computed values of the g.big? 
+
+```{r}
+
+rsqr=summary(g.big)$r.square
+p_sqr=(p^2) # where p is the Pearson correlation between the g.big fitted-values and actual-values from Q.7
+
+((rsqr)); ((p_sqr))
+
+```
+
+
+

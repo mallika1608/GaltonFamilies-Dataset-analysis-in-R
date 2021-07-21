@@ -1,0 +1,104 @@
+
+
+```{r}
+
+#install.packages("HistData",  repos = "http://cran.us.r-project.org", dependencies=TRUE) 
+library("HistData")
+data(GaltonFamilies)
+Galton2 <- data.frame(GaltonFamilies)
+names(Galton2)
+
+```
+
+1. Obtain the summary of the data GaltonFamilies
+
+
+```{r}
+summary(Galton2)
+
+```
+
+
+2. Are there any data that should be coded missing?
+
+
+```{r}
+#install.packages("mice", repos = 'http://cran.rstudio.com')
+
+library(mice)
+M=md.pattern(Galton2)
+M
+
+```
+
+Ans- No, we don't see any variables which shows missing data
+
+
+
+3. Which variables are numeric, integer, or factor?
+
+```{r}
+str(Galton2)
+
+```
+
+Ans- Numeric Variables- 'father', 'mother', 'midparentHeight', 'childHeight'
+Interger Variables- 'children', 'childNum'
+Factor- 'family', 'gender'
+
+
+
+4. What is the R command for obtaining the levels of a factor?
+
+Ans-  R command for obtaining levels of a factor are - levels(dataname)
+
+
+5. Use this command to determine the levels of gender
+
+```{r}
+levels(Galton2$gender)
+
+```
+
+6. Are the labels sufficiently informational?
+
+```{r}
+ str(Galton2$gender)
+```
+
+
+Ans- The lables of 'Levels' has reference level set at 'female' meaning female having lower value and male having higher value. This is not the general trend followed now. Also, 
+from above str command we can infer that Female has been assigned numeric value '1' and male value of'2' which is not consistent with the 'Gender' variable generally defined.
+
+Thus the lables are not sufficiently informational.
+
+
+
+7. Remove the family and childNum columns
+
+
+```{r}
+
+dt<-subset(Galton2, select=-c(family,childNum))
+
+```
+
+
+
+8. Produce the summary table of the modified dataframe
+
+
+```{r}
+summary(dt)
+
+```
+
+
+    
+    
+
+
+
+
+
+
